@@ -12,9 +12,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  SharedPreferences prefs;
+  SharedPreferences preferences;
   SmsMessage smsMessage;
   TextEditingController controllerSerialNumber = new TextEditingController();
+
+  String serial = "";
 
   @override
   void initState() {
@@ -22,12 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
     getSerialNumber();
   }
 
-  Future<void> getSerialNumber() async {
+  @override
+  String setState(VoidCallback fn) {
+    return Utils.serialNumber;
+  }
+
+  Future<String> getSerialNumber() async {
     WidgetsFlutterBinding.ensureInitialized();
-    prefs = await SharedPreferences.getInstance();
-    Utils.serialNumber = prefs.getString('serialNumber');
+    preferences = await SharedPreferences.getInstance();
+    Utils.serialNumber = preferences.getString('serialNumber');
 
     print("HS getSerialNum " + Utils.serialNumber);
+
+    return Utils.serialNumber;
   }
 
   void sendPermissionSMS(String message) {
@@ -134,26 +143,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             AsyncSnapshot<dynamic> snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
+                              print(snapshot.connectionState.toString());
                               return Text(
                                 Utils.serialNumber,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               );
                             case ConnectionState.done:
+                              print(snapshot.connectionState.toString());
                               return Text(
                                 Utils.serialNumber,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               );
                             case ConnectionState.waiting:
+                              print(snapshot.connectionState.toString());
                               return Text(
                                 "Waiting",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               );
                             case ConnectionState.none:
+                              print(snapshot.connectionState.toString());
                               return Text(
-                                "ŞV dxil edin",
+                                "ŞV daxil edin",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20),
                               );
@@ -171,11 +184,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 4,
                     ),
                     IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                        onPressed: editSerialNumber)
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        editSerialNumber();
+                        controllerSerialNumber.text = Utils.serialNumber;
+                      },
+                    )
                   ],
                 ),
                 width: 230,
@@ -236,6 +253,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _onChanged(String value) {
+    setState(() => Utils.serialNumber = 'Change: ${controllerSerialNumber.text}');
+  }
+
   void editSerialNumber() {
     showDialog(
         context: context,
@@ -251,6 +272,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       TextField(
                         controller: controllerSerialNumber,
+                        onChanged: _onChanged,
+                        autofocus: true,
                         decoration: InputDecoration(
                           labelText: "ŞV seriya nömrəsini daxil edin",
                           labelStyle: TextStyle(
@@ -281,16 +304,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           primary: Colors.amberAccent,
                         ),
                         onPressed: () async {
-                          Utils.serialNumber = controllerSerialNumber.text;
+                          preferences.setString(
+                              "serialNumber", controllerSerialNumber.text);
                           Utils().toast(
-                              message: "Vəsiqə uğurla qeydə alındı",
+                              message: controllerSerialNumber.text + " nömrəli vəsiqə uğurla qeydə alındı",
                               backgroundColor: Colors.greenAccent);
 
-                          prefs = await SharedPreferences.getInstance();
-                          prefs.setString("serialNumber", Utils.serialNumber);
-                          print('saved ${Utils.serialNumber}');
-
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeScreen()));
+                          //Navigator.pop(context);
                         },
                         child: Text(
                           "Qeyd et",
