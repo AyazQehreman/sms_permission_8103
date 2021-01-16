@@ -25,7 +25,7 @@ class Utils {
     );
   }
 
-  Future<bool> onBackButtonPressed(context) {
+  Future onBackButtonPressed(context) {
     Utils().giffyDialog(
       context,
       imagePath: Image.asset("assets/images/googd_luck.gif"),
@@ -43,9 +43,11 @@ class Utils {
           fontSize: 18.0,
         ),
       ),
-      buttonOkText: Text("Bəli"),
+      buttonOkText: Text("Bəli",
+          style: TextStyle(color: Colors.white)),
       buttonOkColor: Colors.red,
-      buttonCancelText: Text("Xeyr"),
+      buttonCancelText: Text("Xeyr",
+      style: TextStyle(color: Colors.white),),
       buttonCancelColor: Colors.green,
       onOkButtonPressed: () {
         exit(0);
@@ -81,7 +83,7 @@ class Utils {
               buttonCancelColor: buttonCancelColor,
               onOkButtonPressed: onOkButtonPressed,
               onCancelButtonPressed: onCancelButtonPressed,
-              entryAnimation: entryAnimation ?? EntryAnimation.BOTTOM_RIGHT,
+              entryAnimation: entryAnimation ?? EntryAnimation.BOTTOM,
             ));
   }
 }

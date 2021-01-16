@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sms_permission_8103/src/main_app.dart';
 import 'package:flutter/services.dart';
 import 'package:sms_permission_8103/src/screens/home_screen.dart';
-
-
 
 void main()
 {
