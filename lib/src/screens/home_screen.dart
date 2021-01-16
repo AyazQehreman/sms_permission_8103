@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_maintained/sms.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import '../utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "1 kodlu sms göndərildi. Təstiq mesajını aldıqdan sonra yaşayış yerinizi tərk edə bilərsiniz.");
       },
       onCancelButtonPressed: () => Navigator.pop(context),
+      entryAnimation: EntryAnimation.RIGHT,
     );
   }
 
@@ -98,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "2 kodlu sms göndərildi. Təstiq mesajını aldıqdan sonra yaşayış yerinizi tərk edə bilərsiniz.");
       },
       onCancelButtonPressed: () => Navigator.pop(context),
+      entryAnimation: EntryAnimation.LEFT,
     );
 
     print("sending sms " + smsMessage.address.toString());

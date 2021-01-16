@@ -26,17 +26,31 @@ class Utils {
   }
 
   Future<bool> onBackButtonPressed(context) {
-    giffyDialog(
+    Utils().giffyDialog(
       context,
-      title: Text("Çıxış"),
-      description: Text('Tətbiqi yekunlaşdırmaq istədiyinizdən əminsinizmi?'),
+      imagePath: Image.asset("assets/images/googd_luck.gif"),
+      title: Text(
+        "Çıxış",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24.0,
+        ),
+      ),
+      description: Text(
+        'Tətbiqi yekunlaşdırmaq istədiyinizdən əminsinizmi?',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18.0,
+        ),
+      ),
       buttonOkText: Text("Bəli"),
+      buttonOkColor: Colors.red,
       buttonCancelText: Text("Xeyr"),
+      buttonCancelColor: Colors.green,
       onOkButtonPressed: () {
         exit(0);
       },
       onCancelButtonPressed: () => Navigator.pop(context),
-      imagePath: Image.asset("assets/images/goodluck.gif"),
     );
   }
 
